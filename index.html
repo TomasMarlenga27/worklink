@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <title>JobFinder</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="Logo">
+        <a href="#top"><img src="header_logo.png" alt="Logo" /></a>
+      </div>
+
+      <div class="searcher">
+        <input type="text" id="search" placeholder="Find your job" />
+      </div>
+
+      <nav class="Log_in">
+        <a href="#">Log in</a>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <main class="container">
+      <!-- Filtre -->
+      <div class="filters">
+        <select id="typeFilter">
+          <option value="">Typ práce</option>
+          <option value="brigáda">Brigáda</option>
+          <option value="plný úväzok">Plný úväzok</option>
+          <option value="dočasná">Dočasná</option>
+        </select>
+
+        <select id="locationFilter">
+          <option value="">Lokalita</option>
+          <option value="Bratislava">Bratislava</option>
+          <option value="Košice">Košice</option>
+          <option value="Žilina">Žilina</option>
+          <option value="Trnava">Trnava</option>
+        </select>
+
+        <select id="remoteFilter">
+          <option value="">Spôsob práce</option>
+          <option value="na mieste">Na mieste</option>
+          <option value="na diaľku">Na diaľku</option>
+        </select>
+
+        <select id="salaryFilter">
+          <option value="">Platové rozpätie</option>
+          <option value="do 1000">Do 1000 €</option>
+          <option value="1000-1500">1000 - 1500 €</option>
+          <option value="nad 1500">Nad 1500 €</option>
+        </select>
+      </div>
+
+      <!-- Zoznam ponúk -->
+      <div class="jobs" id="jobList"></div>
+    </main>
+
+    <!-- Modal: Apply Form -->
+    <div class="modal fade" id="applyModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content p-3">
+          <h5 class="modal-title">Žiadosť o prácu</h5>
+          <input
+            type="text"
+            id="applicantName"
+            class="form-control my-2"
+            placeholder="Tvoje meno"
+          />
+          <textarea
+            class="form-control my-2"
+            placeholder="Motivačný list"
+          ></textarea>
+          <button class="btn btn-primary w-100">Odoslať</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const jobs = [
+        {
+          title: 'Barista – víkendová brigáda',
+          company: 'Café Bratislava',
+          location: 'Bratislava',
+          type: 'brigáda',
+          salary: 800,
+          mode: 'na mieste',
+          description:
+            'Príprava kávy a obsluha zákazníkov počas víkendov.',
+        },
+        {
+          title: 'Junior Frontend Developer',
+          company: 'Webify s.r.o.',
+          location: 'Remote',
+          type: 'plný úväzok',
+          salary: 1300,
+          mode: 'na diaľku',
+          description:
+            'Vývoj webových aplikácií v Reacte. Práca na diaľku.',
+        },
+        {
+          title: 'Kuriér – Košice',
+          company: 'Rýchly Doručovateľ',
+          location: 'Košice',
+          type: 'brigáda',
+          salary: 900,
+          mode: 'na mieste',
+          description: 'Rozvoz objednávok po Košiciach. Flexibilný čas.',
+        },
+        {
+          title: 'Predavač/ka v obchode s obuvou',
+          company: 'ObuvTrendy',
+          location: 'Žilina',
+          type: 'plný úväzok',
+          salary: 1100,
+          mode: 'na mieste',
+          description:
+            'Predaj tovaru, starostlivosť o zákazníkov a dopĺňanie tovaru.',
+        },
+        {
+          title: 'Administratívny asistent',
+          company: 'FinPro s.r.o.',
+          location: 'Bratislava',
+          type: 'plný úväzok',
+          salary: 1200,
+          mode: 'na mieste',
+          description:
+            'Administratívna podpora kancelárie, evidencia a komunikácia.',
+        },
+        {
+          title: 'Grafik – freelancer',
+          company: 'DesignPro',
+          location: 'Trnava',
+          type: 'dočasná',
+          salary: 1400,
+          mode: 'na diaľku',
+          description:
+            'Návrh bannerov, vizuálov a online reklamy podľa zadania klienta.',
+        },
+      ];
+
+      const jobList = document.getElementById('jobList');
+      const filters = [
+        'search',
+        'typeFilter',
+        'locationFilter',
+        'remoteFilter',
+        'salaryFilter',
+      ].map((id) => document.getElementById(id));
+
+      function renderJobs() {
+        const search = document
+          .getElementById('search')
+          .value.toLowerCase();
+        const type = document.getElementById('typeFilter').value;
+        const loc = document.getElementById('locationFilter').value;
+        const mode = document.getElementById('remoteFilter').value;
+        const salary = document.getElementById('salaryFilter').value;
+
+        jobList.innerHTML = '';
+
+        const filtered = jobs
+          .filter((j) => j.title.toLowerCase().includes(search))
+          .filter((j) => !type || j.type === type)
+          .filter((j) => !loc || j.location.includes(loc))
+          .filter((j) => !mode || j.mode === mode)
+          .filter((j) => {
+            if (!salary) return true;
+            if (salary === 'do 1000') return j.salary <= 1000;
+            if (salary === '1000-1500')
+              return j.salary >= 1000 && j.salary <= 1500;
+            if (salary === 'nad 1500') return j.salary > 1500;
+          });
+
+        if (filtered.length === 0) {
+          jobList.innerHTML =
+            '<p class="no-results">Žiadne ponuky nevyhovujú filtrom.</p>';
+          return;
+        }
+
+        filtered.forEach((j) => {
+          const div = document.createElement('div');
+          div.className = 'job';
+          div.innerHTML = `
+            <h3>${j.title}</h3>
+            <p><strong>Firma:</strong> ${j.company}</p>
+            <p><strong>Lokalita:</strong> ${j.location}</p>
+            <p><strong>Typ:</strong> ${j.type}</p>
+            <p><strong>Plat:</strong> ${j.salary} €</p>
+            <p><strong>Práca:</strong> ${j.mode}</p>
+            <p>${j.description}</p>`;
+
+          const btn = document.createElement('button');
+          btn.className = 'apply-btn';
+          btn.textContent = 'Odoslať žiadosť';
+          btn.addEventListener('click', () => openForm(j.title));
+          div.appendChild(btn);
+
+          jobList.appendChild(div);
+        });
+      }
+
+      function openForm(title) {
+        document.querySelector('.modal-title').textContent =
+          'Žiadosť o pozíciu: ' + title;
+        new bootstrap.Modal(document.getElementById('applyModal')).show();
+      }
+
+      filters.forEach((f) => f.addEventListener('input', renderJobs));
+      renderJobs();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

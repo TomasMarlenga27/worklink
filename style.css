@@ -1,0 +1,180 @@
+:root {
+    --primary: rgb(172, 65, 172);
+    --primary-hover: #b54fb5;
+    --bg-light: #f9f9f9;
+    --text: #333;
+    --card-bg: #fff;
+  }
+  
+  /* ===== DARK MODE VARIANTS ===== */
+  body.dark {
+    --primary: #d58bff;
+    --primary-hover: #b068d7;
+    --bg-light: #181818;
+    --text: #e8e8e8;
+    --card-bg: #242424;
+  }
+  
+  body {
+    background-color: var(--bg-light);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* ===== HEADER ===== */
+  header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 60px;
+    background-color: var(--primary);
+    height: 110px;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  
+  .Logo img {
+    height: 150px;
+    width: auto;
+  }
+  
+  /* Vyhľadávač */
+  .searcher {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .searcher input {
+    width: 250px;
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  /* Pravá strana hlavičky */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Log in tlačidlo */
+  .Log_in a {
+    display: inline-block;
+    padding: 8px 18px;
+    background-color: #eaeae6;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+  
+  .Log_in a:hover {
+    background-color: #dcdcd7;
+    color: var(--primary-hover);
+  }
+  
+  /* ===== DARK MODE BUTTON ===== */
+  .theme-btn {
+    background: none;
+    border: 2px solid white;
+    border-radius: 50%;
+    font-size: 20px;
+    color: white;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .theme-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+  }
+  
+  /* ===== FILTERS ===== */
+  select,
+  input[type="text"] {
+    min-width: 180px;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: var(--card-bg);
+    color: var(--text);
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+  
+  .filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* ===== JOB CARDS ===== */
+  .jobs {
+    display: grid;
+    gap: 1rem;
+  }
+  
+  .job {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease,
+      border-color 0.2s ease, background 0.3s, color 0.3s;
+  }
+  
+  .job:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary);
+  }
+  
+  .job h3 {
+    margin: 0 0 0.3rem;
+    color: var(--primary);
+  }
+  
+  .job p {
+    margin: 0.2rem 0;
+  }
+  
+  .apply-btn {
+    margin-top: 0.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .apply-btn:hover {
+    background-color: var(--primary-hover);
+  }
+  
+  /* ===== NO RESULTS ===== */
+  .no-results {
+    text-align: center;
+    font-style: italic;
+    color: #777;
+    padding: 1rem;
+  }
+  
